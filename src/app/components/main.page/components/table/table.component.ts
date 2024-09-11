@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { PeriodicElement } from 'src/app/models/interfaces/PeriodicElement';
 
 @Component({
   selector: 'app-table',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './table.component.scss'
 })
 export class TableComponent {
-
+  data = input<PeriodicElement[]>();
 }
