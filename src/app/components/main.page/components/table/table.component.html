@@ -1,3 +1,17 @@
-@for (element of data(); track $index){
-  <div>element: {{ element.name }}</div>
-}
+<mat-form-field>
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" #input>
+</mat-form-field>
+<table mat-table [dataSource]="tableData()" class="mat-elevation-z8">
+  @for (column of displayedColumns(); track $index) {
+    <ng-container matColumnDef="{{ column }}">
+      <th mat-header-cell *matHeaderCellDef> {{ column | tableColumn }}</th>
+      <td mat-cell *matCellDef="let element"> {{ element[column] }}</td>
+    </ng-container>
+  }
+  <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"</td>
+  </tr>
+</table>

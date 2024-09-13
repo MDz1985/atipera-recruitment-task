@@ -1,6 +1,5 @@
-<p>main.page works!</p>
 @if (isLoading()) {
-  ...loading
+  <mat-spinner diameter="50"></mat-spinner>
 } @else {
   <app-table [data]="data()"/>
 }
