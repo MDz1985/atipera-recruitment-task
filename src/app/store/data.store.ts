@@ -1,11 +1,11 @@
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { inject } from '@angular/core';
 import { DataService } from 'src/app/services/data/data.service';
-import { PeriodicElement } from 'src/app/models/interfaces/PeriodicElement';
+import { PeriodicElement, PeriodicElementWithId } from 'src/app/models/interfaces/PeriodicElement';
 
 interface DataState {
   isLoading: boolean;
-  data: PeriodicElement[];
+  data: PeriodicElementWithId[];
 }
 
 const initialState: DataState = {
@@ -20,8 +20,15 @@ export const DataStore = signalStore(
     async loadData(): Promise<void> {
       patchState(store, { isLoading: true });
       const data = await dataService.getData();
-      patchState(store, { data, isLoading: false });
+
+      patchState(store, {
+        data: data.map((el: PeriodicElement, i: number): PeriodicElementWithId => ({ ...el, id: i })),
+        isLoading: false
+      });
     },
+    updateData(data: PeriodicElementWithId): void {
+      patchState(store, { data: [...store.data().filter((el) => el.id !== data.id), data] });
+    }
   })),
   withHooks({ onInit: ({ loadData }) => loadData() })
 );

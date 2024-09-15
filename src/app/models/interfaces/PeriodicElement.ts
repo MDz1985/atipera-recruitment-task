@@ -4,3 +4,7 @@ export interface PeriodicElement {
   weight: number;
   symbol: string;
 }
+
+export interface PeriodicElementWithId extends PeriodicElement {
+  id: number;
+}
