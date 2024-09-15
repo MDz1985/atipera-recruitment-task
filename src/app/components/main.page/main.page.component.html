@@ -1,6 +1,5 @@
 @if (isLoading()) {
   <mat-spinner diameter="50"></mat-spinner>
 } @else {
-  <app-table [data]="data()"/>
+  <app-table [data]="data()" (openModal)="openModal($event)"/>
 }
-
