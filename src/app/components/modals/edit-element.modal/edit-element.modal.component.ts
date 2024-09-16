@@ -25,7 +25,6 @@ import { MatInput } from '@angular/material/input';
     MatLabel
   ],
   templateUrl: './edit-element.modal.component.html',
-  styleUrl: './edit-element.modal.component.scss'
 })
 export class EditElementModalComponent {
   private readonly _dialogRef = inject(MatDialogRef<EditElementModalComponent>);
