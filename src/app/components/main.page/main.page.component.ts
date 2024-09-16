@@ -1,10 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TableComponent } from 'src/app/components/main.page/components/table/table.component';
 import { DataStore } from 'src/app/store/data.store';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { EditElementModalComponent } from 'src/app/components/modals/edit-element.modal/edit-element.modal.component';
 import { PeriodicElementWithId } from 'src/app/models/interfaces/PeriodicElement';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+
+const INPUT_DELAY_MS = 2000;
 
 @Component({
   selector: 'app-main.page',
@@ -12,19 +16,24 @@ import { PeriodicElementWithId } from 'src/app/models/interfaces/PeriodicElement
   imports: [
     TableComponent,
     MatProgressSpinner,
+    MatFormField,
+    MatInput,
+    MatLabel,
   ],
   templateUrl: './main.page.component.html',
   styleUrl: './main.page.component.scss'
 })
 export class MainPageComponent {
-  store = inject(DataStore);
-  readonly data = this.store.data;
-  readonly isLoading = this.store.isLoading;
+  private _filterTimeout: number | undefined;
+  private readonly _store = inject(DataStore);
+  readonly filter = signal<string>('');
+  readonly data = this._store.data;
+  readonly isLoading = this._store.isLoading;
   readonly dialog = inject(MatDialog);
 
   openModal(data: [PeriodicElementWithId | undefined, MouseEvent]) {
     const [element, event] = data;
-    if (element) {
+    if (element && event.target instanceof HTMLTableCellElement) {
       const target = event.target as HTMLTableCellElement;
       const columnIndex = target.cellIndex;
       const columnName = Object.keys(element)[columnIndex];
@@ -36,7 +45,15 @@ export class MainPageComponent {
     }
   }
 
+  applyFilter(event: KeyboardEvent) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    clearTimeout(this._filterTimeout);
+    this._filterTimeout = window.setTimeout(() => {
+      this.filter.set(filterValue.trim().toLowerCase());
+    }, INPUT_DELAY_MS);
+  }
+
   private updateData(data: PeriodicElementWithId) {
-    this.store.updateData(data);
+    this._store.updateData(data);
   }
 }

@@ -1,8 +1,8 @@
 import { PeriodicElement } from 'src/app/models/interfaces/PeriodicElement';
 
 export const TABLE_COLUMNS: Record<keyof PeriodicElement, string> = {
-  name: 'Name',
   position: 'Number',
-  symbol: 'Symbol',
+  name: 'Name',
   weight: 'Weight',
+  symbol: 'Symbol',
 };

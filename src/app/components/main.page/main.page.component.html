@@ -1,5 +1,7 @@
-@if (isLoading()) {
-  <mat-spinner diameter="50"></mat-spinner>
-} @else {
-  <app-table [data]="data()" (openModal)="openModal($event)"/>
-}
+<section class="table-section">
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+  </mat-form-field>
+  <app-table [loading]="isLoading()" [data]="data()" [filter]="filter()" (openModal)="openModal($event)"/>
+</section>
