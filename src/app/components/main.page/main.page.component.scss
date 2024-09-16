@@ -10,4 +10,9 @@
 .table-section {
   width: fit-content;
   margin: 0 auto;
+
+  .filter-input {
+    width: 100%;
+    max-width: 250px;
+  }
 }
