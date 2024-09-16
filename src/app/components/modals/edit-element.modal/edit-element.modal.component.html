@@ -1,0 +1,9 @@
+<mat-dialog-content>
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" style="width: 100%">
+    <input matInput [value]="data" cdkFocusInitial #input (keydown)="onPressEnter($event)">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Cancel</button>
+  <button mat-button (click)="closeDialog(input.value)">Ok</button>
+</mat-dialog-actions>
