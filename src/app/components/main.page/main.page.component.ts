@@ -10,7 +10,7 @@ import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, Observable, startWith } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, merge, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { rxState } from '@rx-angular/state';
 import { RxLet } from '@rx-angular/template/let';
@@ -45,11 +45,11 @@ export class MainPageComponent {
   readonly filterInputValue = signal<string>('');
   readonly data: Signal<PeriodicElementWithId[]> = this._store.data;
   readonly isLoading: Signal<boolean> = this._store.isLoading;
-  readonly filter$: Observable<string> = this._state.select('filter').pipe(
+  private readonly _immediateFilterSubject = new BehaviorSubject<string>('');
+  readonly filter$: Observable<string> = merge(this._state.select('filter').pipe(
     distinctUntilChanged(),
     debounceTime(INPUT_DELAY_MS),
-    startWith(''),
-  );
+  ), this._immediateFilterSubject.asObservable());
 
   constructor() {
     effect(() => {
@@ -73,6 +73,7 @@ export class MainPageComponent {
 
   resetFilter(): void {
     this.filterInputValue.set('');
+    this._immediateFilterSubject.next('');
   }
 
   private updateData(data: PeriodicElementWithId): void {
