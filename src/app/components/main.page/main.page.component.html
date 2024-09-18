@@ -1,14 +1,14 @@
-<section class="table-section">
-  <mat-form-field class="filter-input">
-    <mat-label>Filter</mat-label>
-    <input matInput [(ngModel)]="filterInputValue">
-    @if (filterInputValue()) {
-      <button matSuffix mat-icon-button aria-label="Clear" (click)="resetFilter()">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-  </mat-form-field>
-  <ng-container *rxLet="filter$; let filter;">
-    <app-table [loading]="isLoading()" [data]="data()" [filter]="filter" (openModal)="openModal($event)"/>
-  </ng-container>
-</section>
+<ng-container *rxLet="vm$; let vm">
+  <section class="table-section">
+    <mat-form-field class="filter-input">
+      <mat-label>Filter</mat-label>
+      <input matInput [(ngModel)]="filterInputValue">
+      @if (filterInputValue()) {
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="resetFilter()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+    <app-table [loading]="vm.isLoading" [data]="vm.data" [filter]="vm.filter" (openModal)="openModal($event)"/>
+  </section>
+</ng-container>

@@ -32,7 +32,7 @@ export class TableComponent {
   readonly filter = input<string>('');
   readonly displayedColumns = signal(Object.keys(TABLE_COLUMNS) as (keyof PeriodicElement)[]);
   readonly tableData = computed<MatTableDataSource<PeriodicElement>>(() => {
-    if(this.loading()) return new MatTableDataSource(Array(PLACEHOLDER_ROWS_COUNT).fill({}));
+    if (this.loading()) return new MatTableDataSource(Array(PLACEHOLDER_ROWS_COUNT).fill({}));
     const dataSource = new MatTableDataSource<PeriodicElement>(this.data().sort((a, b) => a.id - b.id));
     dataSource.filter = this.filter();
     return dataSource;
